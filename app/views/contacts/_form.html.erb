@@ -1,0 +1,126 @@
+
+<%= form_for(@contact,  html: {multipart: true}, remote: local_assigns[:ajax_form], authenticity_token: true ) do |f| %>
+  <div class="panel-body">
+    <div class="form-horizontal">
+      <div class="row">
+        <div class="col-md-8">
+          <%= content_tag :div, class: "form-group #{'has-error' if has_error?(@contact,:name) }" do %>
+            <%= f.label :name, class: "control-label col-md-3" %>
+            <div class="col-md-8">
+              <%= f.text_field :name, class: "form-control" %>
+              <% if has_error?(@contact, :name) %>
+                <span class="help-block">
+                  <%= get_error(@contact, :name)%>
+                </span>
+              <% end %>
+            </div>
+          <% end %>
+
+          <div class="form-group">
+            <%= f.label :company, class: "control-label col-md-3" %>
+            <div class="col-md-8">
+              <%= f.text_field :company, class: "form-control" %>
+            </div>
+          </div>
+
+          <%= content_tag :div, class: "form-group #{'has-error' if has_error?(@contact,:email) }" do %>
+            <%= f.label :email, class: "control-label col-md-3" %>
+            <div class="col-md-8">
+              <%= f.text_field :email, class: "form-control" %>
+              <% if has_error?(@contact, :email) %>
+                <span class="help-block">
+                  <%= get_error(@contact, :email)%>
+                </span>
+              <% end %>
+            </div>
+          <% end %>
+
+          <div class="form-group">
+            <%= f.label :phone, class: "control-label col-md-3" %>
+            <div class="col-md-8">
+              <%= f.text_field :phone, class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :address, class: "control-label col-md-3" %>
+            <div class="col-md-8">
+              <%= f.text_area :address, class: "form-control" ,rows: 3%>
+            </div>
+          </div>
+
+          <%= content_tag :div, class: "form-group #{'has-error' if has_error?(@contact,:group_id) }" do %>
+<!--        <label for="group" class="control-label col-md-3">Group</label>
+            <div class="col-md-5">
+              <select name="contact[group_id]" id="group" class="form-control">
+                <option value="">Select group</option>
+                <%# Group.all.each do |group| %>
+                  <option value="<%#=group.id %>"><%#=group.name%></option>
+                <%# end %>
+              </select>
+            </div>-->
+            <%= f.label :group_id, class: "control-label col-md-3" %>
+            <div class="col-md-5">
+              <% attr = { prompt: "Select Group"} %>
+              <% attr[:selected] = session[:selected_group_id].to_i if session[:selected_group_id]%>
+              <%= f.collection_select :group_id, current_user.groups, :id, :name, attr, class: "form-control" %>
+              <% if has_error?(@contact, :group_id) %>
+                <span class="help-block">
+                  <%= get_error(@contact, :group_id)%>
+                </span>
+              <% end %>
+            </div>
+            <div class="col-md-3">
+              <a href="#" id="add-group-btn" class="btn btn-default btn-block">Add Group</a>
+            </div>
+          <% end %>
+
+          <div class="form-group" id="add-new-group">
+            <div class="col-md-offset-3 col-md-8">
+              <div class="input-group">
+                <input type="text" name="new_group" id="new_group" class="form-control">
+                <span class="input-group-btn">
+                  <a id="save-group-btn" href="#" class="btn btn-default">
+                    <i class="glyphicon glyphicon-ok"></i>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-4">
+          <div class="fileinput fileinput-new" data-provides="fileinput">
+            <div class="fileinput-new thumbnail" style="width: 150px; height: 150px;">
+              <%= image_tag @contact.avatar.url(:medium) %>
+            </div>
+            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+            <div class="text-center">
+              <span class="btn btn-default btn-file">
+                <span class="fileinput-new">Choose Photo</span>
+                <span class="fileinput-exists">Change</span>
+                <%= f.file_field :avatar %>
+              </span>
+              <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% unless local_assigns[:ajax_form] %>
+    <div class="panel-footer">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+              <%= f.submit @contact.new_record? ? "Save" : "Update", class:"btn btn-primary" %>
+              <a href="#" class="btn btn-default">Cancel</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>

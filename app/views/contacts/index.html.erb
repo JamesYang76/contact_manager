@@ -1,0 +1,43 @@
+<div class="col-md-3" id="sidebar">
+  <%= render 'layouts/sidebar' %>
+</div><!-- /.col-md-3 -->
+
+<div class="col-md-9">
+  <!--          <p class="notice"><%#= notice %></p>
+          <p class="alert"><%#= alert %></p>-->
+  <%#= render "layouts/messages" if !flash.empty? %>
+
+  <div class="panel panel-default">
+    <div class="panel-heading clearfix">
+      <div class="pull-left">
+        <h4>All Contacts</h4>
+      </div>
+      <div class="pull-right">
+        <%= link_to new_contact_path, class: "btn btn-success", remote: true do %>
+          <i class="glyphicon glyphicon-plus"></i>
+          Add Contact
+        <% end %>
+      </div>
+    </div>
+
+    <table class="table" id="contacts">
+       <%= render @contacts %>
+    </table>
+
+    <% if @contacts.blank? %>
+      <div class="panel-footer message">
+        <div class="alert alert-warning">
+          <strong>Record not found</strong>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="text-center" id="paginator">
+    <%= paginate @contacts, remote: true %>
+  </div>
+
+  <%= render 'layouts/form_modal' %>
+  <%= render 'layouts/confirm_modal' %>
+
+</div>

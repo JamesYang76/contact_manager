@@ -1,0 +1,10 @@
+$('#contacts').html('<tbody><%= escape_javascript render @contacts %></tbody>');
+$('#paginator').html(
+  '<%= escape_javascript paginate @contacts, remote: true,
+  params: { contact: nil, new_group: nil }.merge(previous_query_string) %>');
+$('#sidebar').html('<%= escape_javascript render "layouts/sidebar" %>');
+
+
+$( ".pagination a[data-remote=true], a.list-group-item").click(function() {
+  history.pushState({},'', $(this).attr('href'));
+});
